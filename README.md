@@ -55,7 +55,3 @@ Scoring
 Animations and color themes
 
 Local storage: saving best score
-
-```
-
-```
