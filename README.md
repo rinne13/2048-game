@@ -38,20 +38,24 @@ Copy code
 ```bash
 npm install
 npm run dev
+```
 
+## Planned features
 
-🛠️ Planned features
- Tile movement logic (left, right, up, down)
+Tile movement logic (left, right, up, down)
 
- Tile merging logic (2 + 2 = 4, etc.)
+Tile merging logic (2 + 2 = 4, etc.)
 
- Adding a new tile after each valid move
+Adding a new tile after each valid move
 
- Game over detection
+Game over detection
 
- Scoring
+Scoring
 
- Animations and color themes
+Animations and color themes
 
- Local storage: saving best score
+Local storage: saving best score
+
+```
+
 ```
