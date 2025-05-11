@@ -234,6 +234,8 @@ const GameBoard = () => {
                     </div>
                 ))}
             </div>
+            <div className="mobileSwipes">Swipe to control 🫰</div>
+
 
             <div className="controls">
                 <button onClick={() => handleMove("left")}>⬅</button>

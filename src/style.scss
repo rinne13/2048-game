@@ -64,8 +64,17 @@ body {
   text-align: center;
   z-index: 10;
 }
+.mobileSwipes {
+  visibility: hidden;
+}
 
 @media (max-width: 480px) {
+  .mobileSwipes {
+    visibility: visible;
+    color: black;
+    font-size: large;
+  }
+
   html,
   body {
     overscroll-behavior: none;
@@ -80,8 +89,7 @@ body {
   }
 
   .controls button {
-    font-size: 3.5rem;
-    padding: 10px 14px;
+    visibility: hidden;
   }
   h1,
   h2 {
