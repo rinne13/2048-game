@@ -64,3 +64,26 @@ body {
   text-align: center;
   z-index: 10;
 }
+
+@media (max-width: 480px) {
+  .controls {
+    flex-wrap: wrap;
+    gap: 10px;
+    padding: 10px;
+  }
+
+  .controls button {
+    font-size: 1.2rem;
+    padding: 10px 14px;
+  }
+
+  .status h2 {
+    font-size: 1.2rem;
+    text-align: center;
+  }
+
+  .game-over {
+    font-size: 1.5rem;
+    padding: 15px 25px;
+  }
+}
