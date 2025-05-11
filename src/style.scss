@@ -142,6 +142,10 @@ button:active {
 
 /* ========== MOBILE ========== */
 @media (max-width: 480px) {
+  #root {
+    margin: auto;
+  }
+
   .board {
     grid-template-columns: repeat(4, 60px);
     grid-template-rows: repeat(4, 60px);
@@ -157,7 +161,7 @@ button:active {
   }
 
   .tile {
-    font-size: 18px;
+    font-size: 2rem;
   }
 
   .controls button {
@@ -179,8 +183,7 @@ button:active {
 
   h1,
   h2 {
-    margin: 0.5rem;
-    font-size: 2rem;
+    margin: 0;
     text-align: center;
   }
 }
