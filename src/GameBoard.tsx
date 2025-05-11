@@ -41,8 +41,9 @@ const GameBoard = () => {
 
         if (direction === "left") newBoard = moveLeft(board);
         else if (direction === "right") newBoard = moveRight(board);
-        else if (direction === "up") console.log("⬆️ move up");
-        else if (direction === "down") console.log("⬇️ move down");
+        else if (direction === "up") newBoard = moveUp(board);
+        else if (direction === "down") newBoard = moveDown(board);
+
 
         if (JSON.stringify(newBoard) !== JSON.stringify(board)) {
             setBoard(addRandomTile(newBoard));
@@ -82,6 +83,47 @@ const GameBoard = () => {
             return newBoard;
         }, []);
     };
+    const moveUp = (board: CellValue[]): CellValue[] => {
+        const newBoard = [...board];
+
+        for (let col = 0; col < gridSize; col++) {
+            const column: CellValue[] = [];
+
+            for (let row = 0; row < gridSize; row++) {
+                const index = row * gridSize + col;
+                column.push(board[index]);
+            }
+
+            const merged = mergeRow(column);
+
+            for (let row = 0; row < gridSize; row++) {
+                const index = row * gridSize + col;
+                newBoard[index] = merged[row];
+            }
+        }
+        return newBoard;
+    }
+
+    const moveDown = (board: CellValue[]): CellValue[] => {
+        const newBoard = [...board];
+
+        for (let col = 0; col < gridSize; col++) {
+            const column: CellValue[] = [];
+
+            for (let row = gridSize - 1; row >= 0; row--) {
+                const index = row * gridSize + col;
+                column.push(board[index]);
+            }
+
+            const merged = mergeRow(column).reverse();
+
+            for (let row = 0; row < gridSize; row++) {
+                const index = row * gridSize + col;
+                newBoard[index] = merged[row];
+            }
+        }
+        return newBoard;
+    }
 
     const mergeRow = (row: CellValue[]): CellValue[] => {
         const filtered = row.filter((cell): cell is number => cell !== null);
