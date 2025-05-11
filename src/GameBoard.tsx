@@ -201,8 +201,8 @@ const GameBoard = () => {
             </div>
 
             <div className="controls">
-                <button onClick={() => handleMove("up")}>⬆</button>
                 <button onClick={() => handleMove("left")}>⬅</button>
+                <button onClick={() => handleMove("up")}>⬆</button>
                 <button onClick={() => handleMove("right")}>➡</button>
                 <button onClick={() => handleMove("down")}>⬇</button>
             </div>
