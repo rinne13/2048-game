@@ -178,6 +178,41 @@ const GameBoard = () => {
         return { mergedRow: merged, score };
     };
 
+    useEffect(() => {
+        let startX = 0;
+        let startY = 0;
+
+        const handleTouchStart = (e: TouchEvent) => {
+            startX = e.touches[0].clientX;
+            startY = e.touches[0].clientY;
+        };
+
+        const handleTouchEnd = (e: TouchEvent) => {
+            const endX = e.changedTouches[0].clientX;
+            const endY = e.changedTouches[0].clientY;
+
+            const diffX = endX - startX;
+            const diffY = endY - startY;
+
+            if (Math.abs(diffX) > Math.abs(diffY)) {
+                if (diffX > 30) handleMove("right");
+                else if (diffX < -30) handleMove("left");
+            } else {
+                if (diffY > 30) handleMove("down");
+                else if (diffY < -30) handleMove("up");
+            }
+        };
+
+        window.addEventListener("touchstart", handleTouchStart, { passive: false });
+        window.addEventListener("touchend", handleTouchEnd, { passive: false });
+
+        return () => {
+            window.removeEventListener("touchstart", handleTouchStart);
+            window.removeEventListener("touchend", handleTouchEnd);
+        };
+    }, [board]);
+
+
     return (
         <div className="game-container">
             <div className="status">
