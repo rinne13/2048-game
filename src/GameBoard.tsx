@@ -3,11 +3,12 @@ import "./style.scss";
 
 type CellValue = number | null;
 
+const gridSize = 4;
 
 const GameBoard = () => {
-
-    const gridSize = 4;
     const initialBoard: CellValue[] = Array(gridSize * gridSize).fill(null);
+
+    const [board, setBoard] = useState<CellValue[]>(initialBoard);
 
     const addRandomTile = (board: CellValue[]): CellValue[] => {
         const emptyIndexes = board
@@ -25,45 +26,105 @@ const GameBoard = () => {
         return newBoard;
     };
 
-
-    const [board, setBoard] = useState<CellValue[]>(initialBoard);
-
-    useEffect(() => {
+    const initializeBoard = () => {
         let newBoard = addRandomTile(initialBoard);
         newBoard = addRandomTile(newBoard);
         setBoard(newBoard);
+    };
+
+    useEffect(() => {
+        initializeBoard();
     }, []);
+
+    const handleMove = (direction: "left" | "right" | "up" | "down") => {
+        let newBoard: CellValue[] = board;
+
+        if (direction === "left") newBoard = moveLeft(board);
+        else if (direction === "right") newBoard = moveRight(board);
+        else if (direction === "up") console.log("⬆️ move up");
+        else if (direction === "down") console.log("⬇️ move down");
+
+        if (JSON.stringify(newBoard) !== JSON.stringify(board)) {
+            setBoard(addRandomTile(newBoard));
+        }
+    };
 
     useEffect(() => {
         const handleKeyDown = (event: KeyboardEvent) => {
-            if (event.key === "ArrowUp") {
-                console.log("⬆️ move up");
-            } else if (event.key === "ArrowDown") {
-                console.log("⬇️ move down");
-            } else if (event.key === "ArrowLeft") {
-                console.log("⬅️ move left");
-            } else if (event.key === "ArrowRight") {
-                console.log("➡️ move right");
-            }
+            if (event.key === "ArrowLeft") handleMove("left");
+            else if (event.key === "ArrowRight") handleMove("right");
+            else if (event.key === "ArrowUp") handleMove("up");
+            else if (event.key === "ArrowDown") handleMove("down");
         };
 
         window.addEventListener("keydown", handleKeyDown);
+        return () => window.removeEventListener("keydown", handleKeyDown);
+    }, [board]);
 
-        return () => {
-            window.removeEventListener("keydown", handleKeyDown);
-        };
-    }, []);
+    const moveLeft = (board: CellValue[]): CellValue[] => {
+        return board.reduce<CellValue[]>((newBoard, _, row) => {
+            if (row % gridSize === 0) {
+                const currentRow = board.slice(row, row + gridSize);
+                const mergedRow = mergeRow(currentRow);
+                newBoard.push(...mergedRow);
+            }
+            return newBoard;
+        }, []);
+    };
 
+    const moveRight = (board: CellValue[]): CellValue[] => {
+        return board.reduce<CellValue[]>((newBoard, _, row) => {
+            if (row % gridSize === 0) {
+                const currentRow = board.slice(row, row + gridSize).reverse();
+                const mergedRow = mergeRow(currentRow).reverse();
+                newBoard.push(...mergedRow);
+            }
+            return newBoard;
+        }, []);
+    };
 
+    const mergeRow = (row: CellValue[]): CellValue[] => {
+        const filtered = row.filter((cell): cell is number => cell !== null);
+        const merged: CellValue[] = [];
+        let skip = false;
+
+        for (let i = 0; i < filtered.length; i++) {
+            if (skip) {
+                skip = false;
+                continue;
+            }
+
+            if (filtered[i] === filtered[i + 1]) {
+                merged.push(filtered[i] * 2);
+                skip = true;
+            } else {
+                merged.push(filtered[i]);
+            }
+        }
+
+        while (merged.length < gridSize) {
+            merged.push(null);
+        }
+
+        return merged;
+    };
 
     return (
-        <div className="board">
-            {board.map((value, index) => (
-                <div key={index} className="cell">
-                    {value !== null ? <span className="tile">{value}</span> : null}
-                </div>
-            ))}
+        <div className="game-container">
+            <div className="board">
+                {board.map((value, index) => (
+                    <div key={index} className="cell">
+                        {value !== null ? <span className="tile">{value}</span> : null}
+                    </div>
+                ))}
+            </div>
 
+            <div className="controls">
+                <button onClick={() => handleMove("up")}>⬆</button>
+                <button onClick={() => handleMove("down")}>⬇</button>
+                <button onClick={() => handleMove("left")}>⬅</button>
+                <button onClick={() => handleMove("right")}>➡</button>
+            </div>
         </div>
     );
 };
