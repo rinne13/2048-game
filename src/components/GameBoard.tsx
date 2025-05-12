@@ -50,7 +50,7 @@ const GameBoard = () => {
             setBoard(updatedBoard);
             setScore((prev) => prev + result.gainedScore);
 
-            if (!hasWon && updatedBoard.includes(32)) {
+            if (!hasWon && updatedBoard.includes(2048)) {
                 setHasWon(true);
                 window.open("https://www.youtube.com/watch?v=dQw4w9WgXcQ", "_blank");
                 return;
