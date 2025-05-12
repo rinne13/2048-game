@@ -41,7 +41,7 @@ body {
 }
 
 .tile {
-  font-size: 24px;
+  font-size: 3rem;
   font-weight: bold;
   color: #776e65;
   display: flex;
@@ -139,6 +139,9 @@ button:active {
 
 .mobileSwipes {
   display: none;
+}
+.game-over {
+  font: small-caps bold 24px/1 sans-serif;
 }
 
 /* ========== MOBILE ========== */
