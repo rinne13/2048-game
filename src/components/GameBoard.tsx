@@ -14,18 +14,24 @@ import {
 
 import type { CellValue } from "../types";
 
+
+
 const GameBoard = () => {
     const [board, setBoard] = useState<CellValue[]>(createInitialBoard());
     const [score, setScore] = useState(0);
     const [gameOver, setGameOver] = useState(false);
+    const [hasWon, setHasWon] = useState(false);
 
     const initializeBoard = () => {
         setBoard(createInitialBoard());
         setScore(0);
         setGameOver(false);
+        setHasWon(false);
     };
 
     const handleMove = (direction: "left" | "right" | "up" | "down") => {
+        if (gameOver || hasWon) return;
+
         const result =
             direction === "left"
                 ? processRows(board, false)
@@ -43,6 +49,12 @@ const GameBoard = () => {
             const updatedBoard = addRandomTile(result.newBoard);
             setBoard(updatedBoard);
             setScore((prev) => prev + result.gainedScore);
+
+            if (!hasWon && updatedBoard.includes(32)) {
+                setHasWon(true);
+                window.open("https://www.youtube.com/watch?v=dQw4w9WgXcQ", "_blank");
+                return;
+            }
 
             if (!hasAvailableMoves(updatedBoard)) {
                 setGameOver(true);
@@ -71,7 +83,7 @@ const GameBoard = () => {
 
         window.addEventListener("keydown", handleKeyDown);
         return () => window.removeEventListener("keydown", handleKeyDown);
-    }, [board]);
+    }, [board, gameOver, hasWon]);
 
     // touch support
     useEffect(() => {
@@ -103,7 +115,7 @@ const GameBoard = () => {
             window.removeEventListener("touchstart", handleTouchStart);
             window.removeEventListener("touchend", handleTouchEnd);
         };
-    }, [board]);
+    }, [board, gameOver, hasWon]);
 
     return (
         <div className="game-container">
@@ -113,9 +125,16 @@ const GameBoard = () => {
             </div>
 
             <div className="board">
+                {hasWon && (
+                    <div className="game-over you-win">
+                        <h2>🎉 You Win!</h2>
+                        <button onClick={initializeBoard}>Play Again</button>
+                    </div>
+                )}
+
                 {gameOver && (
                     <div className="game-over">
-                        <h2><span> 💀 </span> Game Over!</h2>
+                        <h2>💀 Game Over!</h2>
                         <button onClick={initializeBoard}>New Game</button>
                     </div>
                 )}
